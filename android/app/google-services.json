@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "135311427614",
+    "project_id": "live-tracking-2fb1c",
+    "storage_bucket": "live-tracking-2fb1c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135311427614:android:91a8725df88d7dcc55460f",
+        "android_client_info": {
+          "package_name": "com.example.car_track"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCZa9YgiEQIp69QSeuNYsAqucaBrOgRM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,31 @@
+name: car_track
+description: A new Flutter project.
+
+# Prevent accidental publishing
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.7.2 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  firebase_core: ^3.13.1
+  cloud_firestore: ^5.6.8
+  get: ^4.6.6
+  google_maps_flutter: ^2.6.0
+  url_launcher: ^6.1.11
+  location: ^8.0.0
+  geolocator: ^9.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
