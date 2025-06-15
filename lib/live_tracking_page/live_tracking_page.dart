@@ -4,56 +4,51 @@ import 'package:get/get.dart';
 import '../model/my_order.dart';
 import 'live_tracking_controller.dart';
 
-class LiveTrackingPage extends StatefulWidget {
+class LiveTrackingPage extends StatelessWidget {
   const LiveTrackingPage({super.key});
 
   @override
-  State<LiveTrackingPage> createState() => _LiveTrackingPageState();
-}
-
-class _LiveTrackingPageState extends State<LiveTrackingPage> {
-  late LiveTrackingController controller;
-  late MyOrder order;
-
-  @override
-  void initState() {
-    super.initState();
-    Map<String, dynamic> arg = Get.arguments;
-    order = arg['order'];
-
-    controller = Get.put(LiveTrackingController());
-    controller.myOrder = order;
-    controller.updateCurrentLocation(order.latitude ?? 0.0, order.longitude ?? 0.0);
-    controller.startTracking(order.id ?? '');
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> arg = Get.arguments;
+    MyOrder order = arg['order'];
+
     return GetBuilder<LiveTrackingController>(
+      init: LiveTrackingController()..initialize(order),
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Live Tracking')),
+          appBar: AppBar(title: const Text('Order Tracking')),
           body: Stack(
             children: [
               GoogleMap(
                 mapType: MapType.normal,
-                onMapCreated: (GoogleMapController mapCtrl) {
-                  controller.mapController = mapCtrl;
+                onMapCreated: (mpCtrl) {
+                  controller.mapController = mpCtrl;
                 },
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(order.latitude ?? 0.0, order.longitude ?? 0.0),
+                  target: controller.deliveryBoyLocation,
                   zoom: 15.0,
                 ),
                 markers: {
                   Marker(
-                    markerId: const MarkerId('destination'),
-                    position: LatLng(order.latitude ?? 0.0, order.longitude ?? 0.0),
-                    icon: controller.markerIcon,
-                  ),
-                  Marker(
                     markerId: const MarkerId('deliveryBoy'),
                     position: controller.deliveryBoyLocation,
-                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                    icon: controller.markerIcon,
+                    infoWindow: InfoWindow(
+                      title: 'Delivery Boy',
+                      snippet:
+                          'Lat: ${controller.deliveryBoyLocation.latitude}, Lng: ${controller.deliveryBoyLocation.longitude}',
+                    ),
+                  ),
+                  Marker(
+                    markerId: const MarkerId('destination'),
+                    position: controller.destination,
+                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueBlue),
+                    infoWindow: InfoWindow(
+                      title: 'Destination',
+                      snippet:
+                          'Lat: ${controller.destination.latitude}, Lng: ${controller.destination.longitude}',
+                    ),
                   ),
                 },
               ),
@@ -65,12 +60,17 @@ class _LiveTrackingPageState extends State<LiveTrackingPage> {
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: Colors.yellow,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
+                      'Order ID: ${controller.myOrder.id ?? 'N/A'}\n'
                       'Remaining Distance: ${controller.remainingDistance.toStringAsFixed(2)} km',
-                      style: const TextStyle(fontSize: 16.0),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),

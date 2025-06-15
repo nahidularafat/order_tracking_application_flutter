@@ -83,60 +83,49 @@ class DeliveryBoyController extends GetxController {
     }
   }
 
- void startDelivery() {
-  final orderId = orderIdController.text.trim();
-
-  if (orderId.isEmpty) {
-    Get.snackbar('Error', 'Order ID is empty!');
-    return;
-  }
-
-  if (!showDeliveryInfo) {
-    Get.snackbar('Error', 'Please fetch order info first.');
-    return;
-  }
-
-  // Start listening to location changes
+void startDelivery() {
   location.onLocationChanged.listen((LocationData currentLocation) {
     print('Location changed: ${currentLocation.latitude}, ${currentLocation.longitude}');
 
+   
     saveOrUpdateOrderLocation(
-      orderId,
+      orderIdController.text,
       currentLocation.latitude ?? 0,
       currentLocation.longitude ?? 0,
     );
   });
 
   location.enableBackgroundMode(enable: true);
-  isDeliveryStarted = true;
-  Get.snackbar('Success', 'Delivery tracking started.');
 }
 
 
-  Future<void> saveOrUpdateOrderLocation(String orderId, double latitude, double longitude) async {
-    try {
-      final DocumentReference docRef = ordertrackingCollection.doc(orderId);
 
-      await firestore.runTransaction((transaction) async {
-        final DocumentSnapshot snapshot = await transaction.get(docRef);
+Future<void> saveOrUpdateOrderLocation(String orderId, double latitude, double longitude) async {
+  try {
+    final DocumentReference docRef = ordertrackingCollection.doc(orderId);
 
-        if (snapshot.exists) {
-          transaction.update(docRef, {
-            'latitude': latitude,
-            'longitude': longitude,
-          });
-        } else {
-          transaction.set(docRef, {
-            'orderId': orderId,
-            'latitude': latitude,
-            'longitude': longitude,
-          });
-        }
-      });
+    //? Use a transaction to ensure atomic read and write
+    await firestore.runTransaction((transaction) async {
+      final DocumentSnapshot snapshot = await transaction.get(docRef);
 
-      print('Location saved: $latitude, $longitude');
-    } catch (e) {
-      print('Error saving location: $e');
-    }
+      if (snapshot.exists) {
+        //? Document exists, so we update it
+        transaction.update(docRef, {
+          'latitude': latitude,
+          'longitude': longitude,
+        });
+      } else {
+        //? Document does not exist, we create a new one
+        transaction.set(docRef, {
+          'orderId': orderId,
+          'latitude': latitude,
+          'longitude': longitude,
+        });
+      }
+    });
+  } catch (e) {
+    print('Error saving or updating order location: $e');
   }
+}
+
 }

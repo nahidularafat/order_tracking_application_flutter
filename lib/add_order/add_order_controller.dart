@@ -1,11 +1,8 @@
-//import 'package:car_track/model/my_order.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-//import '../model/order.dart';
+import 'package:geolocator/geolocator.dart';
 import '../model/my_order.dart';
 
 class AddOrderController extends GetxController {
@@ -24,8 +21,41 @@ class AddOrderController extends GetxController {
 
   @override
   void onInit() {
-    orderCollection = firestore.collection('orders');
     super.onInit();
+    orderCollection = firestore.collection('orders');
+    checkLocationPermissionAndGetLocation(); // 🔹 New line added
+  }
+
+  // 🔹 Step 1: Check permission and get current location
+  Future<void> checkLocationPermissionAndGetLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      Get.snackbar('Location Error', 'Please enable GPS from settings.');
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        Get.snackbar('Permission Denied', 'Location permission is permanently denied.');
+        return;
+      }
+    }
+
+    // 🔹 Get current location
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    currentLocation = LatLng(position.latitude, position.longitude);
+    selectedLocation = currentLocation;
+
+    // 🔹 Move camera to current location
+    if (mapController != null) {
+      mapController!.animateCamera(
+        CameraUpdate.newLatLngZoom(currentLocation, 15),
+      );
+    }
+
+    update();
   }
 
   void addOrder(BuildContext context) {
