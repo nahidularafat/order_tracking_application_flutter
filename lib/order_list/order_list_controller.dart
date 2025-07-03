@@ -11,7 +11,7 @@ class OrderListController extends GetxController {
 
   @override
   void onInit() {
-    orderCollection = firestore.collection('orders'); // ✅ ফিক্স
+    orderCollection = firestore.collection('orders'); 
     getAllOrder();
     super.onInit();
   }

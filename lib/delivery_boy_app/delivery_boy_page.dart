@@ -12,16 +12,15 @@ class DeliveryBoyPage extends StatelessWidget {
       init: DeliveryBoyController(),
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Delivery Boy App')),
+          appBar: AppBar(title: const Text('DRIVER APPLICATION')),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
-                Image.network(
-                  'https://img.freepik.com/free-vector/illustration-delivery-service-with-mask-design_23-2148509423.jpg',
-                  width: 200,
-                  height: 200,
-                ),
+                 Image.asset(
+                    'lib/images/bubt_bus-removebg-preview.png',
+                    height: 110,
+                  ),
                 const Text(
                   'Enter Order ID:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -114,7 +113,7 @@ class DeliveryBoyPage extends StatelessWidget {
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.white,
                             ),
-                            child: const Text('Start'),
+                            child: const Text('Start delivery'),
                           ),
                         ],
                       ),

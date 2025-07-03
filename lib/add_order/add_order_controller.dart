@@ -79,7 +79,7 @@ class AddOrderController extends GetxController {
         );
         
         final orderJson = order.toJson();
-        doc.set(orderJson);
+        doc.set(orderJson); // push from here
         clearTextFields();
         
         ScaffoldMessenger.of(context).showSnackBar(

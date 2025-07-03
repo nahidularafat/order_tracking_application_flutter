@@ -14,13 +14,15 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  firebase_core: ^3.13.1
+  firebase_core: ^3.15.0
   cloud_firestore: ^5.6.8
   get: ^4.6.6
   google_maps_flutter: ^2.6.0
   url_launcher: ^6.1.11
   location: ^8.0.0
   geolocator: ^9.0.2
+  provider: ^6.1.5
+  firebase_auth: ^5.6.1
 
 dev_dependencies:
   flutter_test:
@@ -31,3 +33,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/marker.png
+    - lib/images/bubt_bus-removebg-preview.png
+    - assets/images/
