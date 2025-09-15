@@ -34,7 +34,7 @@ class AddOrderPage extends StatelessWidget {
                 TextField(
                   controller: controller.orderIdController,
                   decoration: const InputDecoration(
-                    labelText: 'Student ID',
+                    labelText: 'Bus ID',
                   ),
                 ),
                 const SizedBox(height: 16.0),

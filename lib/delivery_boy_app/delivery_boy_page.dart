@@ -22,14 +22,14 @@ class DeliveryBoyPage extends StatelessWidget {
                     height: 110,
                   ),
                 const Text(
-                  'Enter Order ID:',
+                  'Enter BUS  ID:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: controller.orderIdController,
                   decoration: const InputDecoration(
-                    hintText: 'Order ID',
+                    hintText: 'BUS ID',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -113,7 +113,7 @@ class DeliveryBoyPage extends StatelessWidget {
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.white,
                             ),
-                            child: const Text('Start delivery'),
+                            child: const Text('Start Travel'),
                           ),
                         ],
                       ),
